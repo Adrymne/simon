@@ -1,0 +1,13 @@
+.settings-box {
+  width: 50%;
+
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.settings-buttons {
+  width: 100%;
+  display: flex;
+  justify-content: space-around;
+}

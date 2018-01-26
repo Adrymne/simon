@@ -1,19 +1,20 @@
-import React, { Component } from 'react';
+import React from 'react';
 import './App.css';
+import SimonButton from './app/SimonButton';
+import Settings from './app/Settings';
 
-class App extends Component {
-  render() {
-    return (
-      <div className="App">
-        <header className="App-header">
-          <h1 className="App-title">Welcome to React</h1>
-        </header>
-        <p className="App-intro">
-          To get started, edit <code>src/App.js</code> and save to reload.
-        </p>
+const App = () => (
+  <div className="app-container">
+    <div className="simon-container">
+      <SimonButton className="simon-button simon-top-left" />
+      <SimonButton className="simon-button simon-top-right" />
+      <SimonButton className="simon-button simon-bottom-left" />
+      <SimonButton className="simon-button simon-bottom-right" />
+      <div className="simon-settings">
+        <Settings />
       </div>
-    );
-  }
-}
+    </div>
+  </div>
+);
 
 export default App;
