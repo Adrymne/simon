@@ -12,38 +12,35 @@
   position: relative;
 }
 
-.simon-button {
+.simon-area {
   position: absolute;
   width: 50%;
   height: 50%;
   border: none;
+  overflow: hidden;
 }
 
 .simon-top-left {
   top: 0;
   left: 0;
-  background-color: darkgreen;
   border-radius: 100% 0 0 0;
 }
 
 .simon-top-right {
   top: 0;
   right: 0;
-  background-color: darkred;
   border-radius: 0 100% 0 0;
 }
 
 .simon-bottom-left {
   bottom: 0;
   left: 0;
-  background-color: darkgoldenrod;
   border-radius: 0 0 0 100%;
 }
 
 .simon-bottom-right {
   bottom: 0;
   right: 0;
-  background-color: darkblue;
   border-radius: 0 0 100% 0;
 }
 
