@@ -1,6 +1,7 @@
 import React from 'react';
 import { connect } from 'react-redux';
 import { applySpec, pipe, equals } from 'ramda';
+import S from 'sanctuary-module';
 import SimonButton from './simonSection/SimonButton';
 import SimonDisplay from './simonSection/SimonDisplay';
 import { isPlayerPhase, getHighlightedSection } from 'store/reducers';
@@ -20,7 +21,10 @@ const mapStateToProps = (state, ownProps) =>
   applySpec(
     {
       isPlayerPhase,
-      isHighlighted: pipe(getHighlightedSection, equals(ownProps.position))
+      isHighlighted: pipe(
+        getHighlightedSection,
+        S.maybe(false, equals(ownProps.position))
+      )
     },
     state
   );

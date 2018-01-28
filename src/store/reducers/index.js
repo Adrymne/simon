@@ -1,14 +1,9 @@
 import { prop, pipe } from 'ramda';
 import { combineReducers } from 'redux-loop';
 import appMode, * as appModeSelectors from './appMode';
-import gameState from './gameState';
-import playbackState, * as playbackSelectors from './playbackState';
+import gameState, * as gameSelectors from './gameState';
 
-// appMode =  Startup | Playback | PlayerInput
-// gameState = currentSequence playerInput maxSequenceLength
-// isStrict = True | False
-
-export default combineReducers({ gameState, appMode, playbackState });
+export default combineReducers({ gameState, appMode });
 
 export const isStartupPhase = pipe(
   prop('appMode'),
@@ -19,6 +14,10 @@ export const isPlayerPhase = pipe(
   appModeSelectors.isPlayerPhase
 );
 export const getHighlightedSection = pipe(
-  prop('playbackState'),
-  playbackSelectors.getHighlightedSection
+  prop('gameState'),
+  gameSelectors.getHighlightedSection
+);
+export const isPlaybackDone = pipe(
+  prop('gameState'),
+  gameSelectors.isPlaybackDone
 );
