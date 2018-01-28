@@ -1,23 +1,24 @@
 import React from 'react';
+import { connect } from 'react-redux';
+import { applySpec } from 'ramda';
 import './App.css';
-import SimonButton from './app/SimonButton';
+import SimonSection from './app/SimonSection';
 import Settings from './app/Settings';
+import StartupPrompt from './app/StartupPrompt';
 import { POSITIONS } from 'types';
+import { isStartupPhase } from 'store/reducers';
 
-// TODO: swap SimonButton for (new component) SimonDisplay during playback
-const App = () => (
+const App = ({ isStartupPhase }) => (
   <div className="app-container">
     <div className="simon-container">
-      {POSITIONS.map(position => (
-        <div className={`simon-area simon-${position}`}>
-          <SimonButton position={position} />
-        </div>
-      ))}
+      {POSITIONS.map(p => <SimonSection position={p} key={p} />)}
       <div className="simon-settings">
-        <Settings />
+        {isStartupPhase ? <StartupPrompt /> : <Settings />}
       </div>
     </div>
   </div>
 );
 
-export default App;
+const mapStateToProps = applySpec({ isStartupPhase });
+
+export default connect(mapStateToProps)(App);
