@@ -4,6 +4,7 @@ import { Cmd, loop } from 'redux-loop';
 import * as actions from 'store/actions';
 import * as effects from 'store/effects';
 import { TOP_LEFT, BOTTOM_RIGHT } from 'types';
+import { PLAYBACK_VISIBLE, PLAYBACK_PAUSE } from 'invariants';
 
 describe('reducer', () => {
   const subject = sut.default;
@@ -17,9 +18,8 @@ describe('reducer', () => {
     expect(result).toEqual(
       loop(
         {
-          playbackIndex: S.Nothing,
-          currentSequence: [],
-          playerInput: []
+          playback: S.Nothing,
+          sequence: []
         },
         Cmd.run(effects.generateStep, { successActionCreator: actions.addStep })
       )
@@ -28,9 +28,8 @@ describe('reducer', () => {
 
   it('ADD_STEP', () => {
     const state = {
-      playbackIndex: S.Nothing,
-      currentSequence: [TOP_LEFT],
-      playerInput: []
+      playback: S.Nothing,
+      sequence: [TOP_LEFT]
     };
     const action = actions.addStep(BOTTOM_RIGHT);
 
@@ -39,38 +38,92 @@ describe('reducer', () => {
     expect(result).toEqual(
       loop(
         {
-          playbackIndex: S.Just(0),
-          currentSequence: [TOP_LEFT, BOTTOM_RIGHT],
-          playerInput: []
+          playback: S.Just({ index: 0, isVisible: true }),
+          sequence: [TOP_LEFT, BOTTOM_RIGHT]
         },
-        Cmd.run(effects.runPlayback, {
-          successActionCreator: actions.startPlayerTurn,
-          args: [Cmd.getState, Cmd.dispatch]
+        Cmd.run(effects.waitFor, {
+          successActionCreator: actions.advancePlayback,
+          args: [PLAYBACK_VISIBLE]
         })
       )
     );
   });
 
-  it('ADVANCE_PLAYBACK', () => {
-    const state = {
-      playbackIndex: S.Just(0),
-      currentSequence: [TOP_LEFT, BOTTOM_RIGHT],
-      playerInput: []
-    };
-    const action = actions.advancePlayback();
+  describe('ADVANCE_PLAYBACK', () => {
+    it('playback not running', () => {
+      const state = { playback: S.Nothing, sequence: ['a', 'b', 'c'] };
+      const action = actions.advancePlayback();
 
-    const result = subject(state, action);
+      const result = subject(state, action);
 
-    expect(result).toEqual(
-      loop(
-        {
-          playbackIndex: S.Just(1),
-          currentSequence: [TOP_LEFT, BOTTOM_RIGHT],
-          playerInput: []
-        },
-        Cmd.none
-      )
-    );
+      expect(result).toEqual(loop(state, Cmd.none));
+    });
+
+    it('playback running, item visible', () => {
+      const state = {
+        playback: S.Just({ index: 1, isVisible: true }),
+        sequence: ['a', 'b', 'c']
+      };
+      const action = actions.advancePlayback();
+
+      const result = subject(state, action);
+
+      expect(result).toEqual(
+        loop(
+          {
+            playback: S.Just({ index: 2, isVisible: false }),
+            sequence: ['a', 'b', 'c']
+          },
+          Cmd.run(effects.waitFor, {
+            successActionCreator: actions.advancePlayback,
+            args: [PLAYBACK_PAUSE]
+          })
+        )
+      );
+    });
+
+    it('playback running, item not visible', () => {
+      const state = {
+        playback: S.Just({ index: 1, isVisible: false }),
+        sequence: ['a', 'b', 'c']
+      };
+      const action = actions.advancePlayback();
+
+      const result = subject(state, action);
+
+      expect(result).toEqual(
+        loop(
+          {
+            playback: S.Just({ index: 1, isVisible: true }),
+            sequence: ['a', 'b', 'c']
+          },
+          Cmd.run(effects.waitFor, {
+            successActionCreator: actions.advancePlayback,
+            args: [PLAYBACK_VISIBLE]
+          })
+        )
+      );
+    });
+
+    it('playback done', () => {
+      const state = {
+        playback: S.Just({ index: 2, isVisible: true }),
+        sequence: ['a', 'b', 'c']
+      };
+      const action = actions.advancePlayback();
+
+      const result = subject(state, action);
+
+      expect(result).toEqual(
+        loop(
+          {
+            playback: S.Just({ index: 3, isVisible: false }),
+            sequence: ['a', 'b', 'c']
+          },
+          Cmd.action(actions.startPlayerTurn())
+        )
+      );
+    });
   });
 });
 
@@ -78,54 +131,43 @@ describe('getHighlightedSection', () => {
   const subject = sut.getHighlightedSection;
 
   it('no playback', () => {
-    const state = { playbackIndex: S.Nothing, currentSequence: [] };
+    const state = { playback: S.Nothing, sequence: [] };
 
     const result = subject(state);
 
     expect(result).toBe(S.Nothing);
   });
 
-  it('playback in progress', () => {
-    const state = { playbackIndex: S.Just(1), currentSequence: [1, 2, 3] };
+  it('playback in progress, section visible', () => {
+    const state = {
+      playback: S.Just({ index: 1, isVisible: true }),
+      sequence: ['a', 'b', 'c']
+    };
 
     const result = subject(state);
 
-    expect(result).toEqual(S.Just(2));
+    expect(result).toEqual(S.Just('b'));
+  });
+
+  it('playback in progress, section not visible', () => {
+    const state = {
+      playback: S.Just({ index: 1, isVisible: false }),
+      sequence: ['a', 'b', 'c']
+    };
+
+    const result = subject(state);
+
+    expect(result).toEqual(S.Nothing);
   });
 
   it('playback over', () => {
-    const state = { playbackIndex: S.Just(3), currentSequence: [1, 2, 3] };
+    const state = {
+      playback: S.Just({ index: 3 }),
+      sequence: ['a', 'b', 'c']
+    };
 
     const result = subject(state);
 
     expect(result).toBe(S.Nothing);
-  });
-});
-
-describe('isPlaybackDone', () => {
-  const subject = sut.isPlaybackDone;
-
-  it('no playback', () => {
-    const state = { playbackIndex: S.Nothing, currentSequence: [] };
-
-    const result = subject(state);
-
-    expect(result).toBe(true);
-  });
-
-  it('playback in progress', () => {
-    const state = { playbackIndex: S.Just(1), currentSequence: [1, 2, 3] };
-
-    const result = subject(state);
-
-    expect(result).toBe(false);
-  });
-
-  it('playback finished', () => {
-    const state = { playbackIndex: S.Just(3), currentSequence: [1, 2, 3] };
-
-    const result = subject(state);
-
-    expect(result).toBe(true);
   });
 });

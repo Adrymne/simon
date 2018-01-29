@@ -17,7 +17,3 @@ export const getHighlightedSection = pipe(
   prop('gameState'),
   gameSelectors.getHighlightedSection
 );
-export const isPlaybackDone = pipe(
-  prop('gameState'),
-  gameSelectors.isPlaybackDone
-);
