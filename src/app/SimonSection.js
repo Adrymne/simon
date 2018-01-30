@@ -4,7 +4,7 @@ import { applySpec, pipe, equals } from 'ramda';
 import S from 'sanctuary-module';
 import SimonButton from './simonSection/SimonButton';
 import SimonDisplay from './simonSection/SimonDisplay';
-import { isPlayerPhase, getHighlightedSection } from 'store/reducers';
+import { isPlayerPhase, getHighlightedSection } from 'store/selectors';
 import './SimonSection.css';
 
 const SimonSection = ({ position, isPlayerPhase, isHighlighted }) => (

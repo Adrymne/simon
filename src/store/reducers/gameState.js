@@ -82,10 +82,3 @@ const reducer = createReducer(DEFAULT, {
   [START_PLAYER_TURN]: evolve({ playback: always(S.Nothing) })
 });
 export default pipe(reducer, liftState);
-
-// getHighlightedSection :: State -> Maybe Section
-export const getHighlightedSection = ({ playback, sequence }) =>
-  S.chain(
-    ({ isVisible, index }) => (isVisible ? S.at(index, sequence) : S.Nothing),
-    playback
-  );
