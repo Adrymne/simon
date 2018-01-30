@@ -120,7 +120,10 @@ describe('reducer', () => {
             playback: S.Just({ index: 3, isVisible: false }),
             sequence: ['a', 'b', 'c']
           },
-          Cmd.action(actions.startPlayerTurn())
+          Cmd.run(effects.waitFor, {
+            successActionCreator: actions.startPlayerTurn,
+            args: [PLAYBACK_PAUSE]
+          })
         )
       );
     });

@@ -61,7 +61,14 @@ const reducer = createReducer(DEFAULT, {
     evolve({ playback: map(toNextState) }),
     cond([
       [isNoPlayback, state => loop(state, Cmd.none)],
-      [isPlaybackDone, state => loop(state, Cmd.action(startPlayerTurn()))],
+      [
+        isPlaybackDone,
+        run({
+          cmd: waitFor,
+          onSuccess: startPlayerTurn,
+          args: [PLAYBACK_PAUSE]
+        })
+      ],
       [
         T,
         runWith(state => ({
