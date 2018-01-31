@@ -8,7 +8,7 @@ it('ADD_STEP', () => {
 
   const result = subject(state, action);
 
-  expect(result).toEqual(S.Just({ index: 0, isVisible: true }));
+  expect(result).toEqual(S.Just({ index: 0, isVisible: false }));
 });
 
 describe('ADVANCE_PLAYBACK', () => {
@@ -44,5 +44,5 @@ it('START_PLAYER_TURN', () => {
 
   const result = subject(state, action);
 
-  expect(result).toEqual(S.Just({ index: 0, isVisible: true }));
+  expect(result).toEqual(S.Just({ index: 0, isVisible: false }));
 });

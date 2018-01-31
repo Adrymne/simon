@@ -10,7 +10,7 @@ State = Maybe {
 */
 
 const DEFAULT = S.Nothing;
-const INITIAL = S.Just({ index: 0, isVisible: true });
+const INITIAL = S.Just({ index: 0, isVisible: false });
 
 const nextStep = ({ isVisible, index }) =>
   isVisible
