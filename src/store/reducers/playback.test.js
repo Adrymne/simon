@@ -44,5 +44,5 @@ it('START_PLAYER_TURN', () => {
 
   const result = subject(state, action);
 
-  expect(result).toBe(S.Nothing);
+  expect(result).toEqual(S.Just({ index: 0, isVisible: true }));
 });

@@ -20,5 +20,5 @@ const nextStep = ({ isVisible, index }) =>
 export default createReducer(DEFAULT, {
   [ADD_STEP]: () => INITIAL,
   [ADVANCE_PLAYBACK]: state => S.map(nextStep, state),
-  [START_PLAYER_TURN]: () => DEFAULT
+  [START_PLAYER_TURN]: () => INITIAL
 });

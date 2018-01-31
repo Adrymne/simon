@@ -9,3 +9,9 @@ export const startPlayerTurn = () => ({ type: START_PLAYER_TURN });
 
 export const ADVANCE_PLAYBACK = 'ADVANCE_PLAYBACK';
 export const advancePlayback = () => ({ type: ADVANCE_PLAYBACK });
+
+export const INPUT_SECTION = 'INPUT_SECTION';
+export const inputSection = section => ({
+  type: INPUT_SECTION,
+  payload: section
+});

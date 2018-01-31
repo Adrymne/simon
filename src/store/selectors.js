@@ -1,13 +1,14 @@
-import { propEq } from 'ramda';
+import { pathEq } from 'ramda';
 import S from 'sanctuary-module';
 import { STARTUP, PLAYER } from 'types';
 import { PLAYBACK_SHOW_TIME, PLAYBACK_PAUSE_TIME } from 'invariants';
 
 /*
 State = {
-  appMode :: Startup | Playback | Player,
   gameState: {
-    sequence :: [Section]
+    phase :: Startup | Playback | Player
+    sequence :: [Section],
+    playerInput :: [Section]
   },
   playbackState: Maybe {
     index :: Int,
@@ -17,9 +18,9 @@ State = {
 */
 
 // isStartupPhase :: State -> Boolean
-export const isStartupPhase = propEq('appMode', STARTUP);
+export const isStartupPhase = pathEq(['gameState', 'phase'], STARTUP);
 // isPlayerPhase :: State -> Boolean
-export const isPlayerPhase = propEq('appMode', PLAYER);
+export const isPlayerPhase = pathEq(['gameState', 'phase'], PLAYER);
 
 // getHighlightedSection :: State -> Maybe Section
 export const getHighlightedSection = ({
