@@ -118,7 +118,7 @@ describe('reducer', () => {
 
       const result = subject(state, action);
 
-      const expected = R.assoc('phase', types.Phase.None, state);
+      const expected = R.assoc('phase', types.Phase.Player(3), state);
       expect(result).toEqual(
         loop(
           expected,
@@ -176,11 +176,7 @@ describe('reducer', () => {
 
       expect(result).toEqual(
         loop(
-          {
-            sequence: [],
-            phase: types.Phase.None,
-            isStrict: true
-          },
+          { sequence: [], phase: state.phase, isStrict: state.isStrict },
           Cmd.run(effects.generateStep, {
             successActionCreator: actions.addStep
           })

@@ -40,6 +40,20 @@ export const isPlayerPhase = pathSatisfies(
   ['gameState', 'phase']
 );
 
+// getCurrentStep :: State -> Number
+export const getCurrentStep = state =>
+  Phase.case(
+    {
+      Player: progress => progress,
+      _: () => 0
+    },
+    state.gameState.phase
+  );
+
+// getCurrentSequenceLength :: State -> Number
+export const getCurrentSequenceLength = state =>
+  state.gameState.sequence.length;
+
 // getHighlightedSection :: State -> Maybe Section
 export const getHighlightedSection = ({ gameState: { sequence, phase } }) =>
   Phase.case(

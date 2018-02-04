@@ -13,7 +13,7 @@ import { MAX_SEQUENCE } from 'invariants';
 
 const DEFAULT = {
   sequence: [],
-  isStrict: false,
+  isStrict: true,
   phase: Phase.None
 };
 const PLAYBACK_INITIAL = Phase.PlaybackOf({ index: 0, isVisible: false });
@@ -111,10 +111,7 @@ const SEQUENCE_COMPLETE = [
       phase
     ),
   // transformer :: State -> (State, Cmd)
-  pipe(
-    assoc('phase', Phase.None),
-    run({ cmd: generateStep, onSuccess: addStepAction })
-  )
+  run({ cmd: generateStep, onSuccess: addStepAction })
 ];
 const OTHERWISE = [
   // predicate :: State -> Boolean
@@ -134,7 +131,7 @@ const isStrictMode = ({ isStrict }) => isStrict;
 
 // strictReset :: State -> (State, Cmd)
 const strictReset = pipe(
-  evolve({ sequence: () => [], phase: () => Phase.None }),
+  evolve({ sequence: () => [] }),
   run({ cmd: generateStep, onSuccess: addStepAction })
 );
 
