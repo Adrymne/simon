@@ -5,6 +5,7 @@ import {
   ADD_STEP,
   ADVANCE_PLAYBACK,
   INPUT_SECTION,
+  NEW_GAME,
   addStep as addStepAction
 } from 'store/actions';
 import { runPlayback, generateStep } from 'store/effects';
@@ -13,7 +14,7 @@ import { MAX_SEQUENCE } from 'invariants';
 
 const DEFAULT = {
   sequence: [],
-  isStrict: true,
+  isStrict: false,
   phase: Phase.None
 };
 const PLAYBACK_INITIAL = Phase.PlaybackOf({ index: 0, isVisible: false });
@@ -38,6 +39,8 @@ const addStep = pipe(
     ),
   startPlayback
 );
+
+const newGame = (state, action) => addStep(DEFAULT, action);
 
 //-----------------------------------------------------------------------------
 // ADVANCE PLAYBACK
@@ -160,6 +163,7 @@ const inputSection = (state, action) =>
   );
 
 export default createReducer(DEFAULT, {
+  [NEW_GAME]: newGame,
   [ADD_STEP]: addStep,
   [ADVANCE_PLAYBACK]: advancePlayback,
   [INPUT_SECTION]: inputSection

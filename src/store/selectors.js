@@ -1,7 +1,11 @@
 import { pathSatisfies } from 'ramda';
 import S from 'sanctuary-module';
 import { Phase } from 'types';
-import { PLAYBACK_SHOW_TIME, PLAYBACK_PAUSE_TIME } from 'invariants';
+import {
+  PLAYBACK_SHOW_TIME,
+  PLAYBACK_PAUSE_TIME,
+  MAX_SEQUENCE
+} from 'invariants';
 
 /*
 Section = TopLeft | TopRight | BottomLeft | BottomRight
@@ -39,6 +43,16 @@ export const isPlayerPhase = pathSatisfies(
   Phase.case({ Player: () => true, _: () => false }),
   ['gameState', 'phase']
 );
+
+// isGameOver :: State -> Boolean
+export const isGameOver = state =>
+  Phase.case(
+    {
+      None: () => state.gameState.sequence.length === MAX_SEQUENCE,
+      _: () => false
+    },
+    state.gameState.phase
+  );
 
 // getCurrentStep :: State -> Number
 export const getCurrentStep = state =>

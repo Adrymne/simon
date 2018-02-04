@@ -1,17 +1,25 @@
 import React from 'react';
 import { Button } from 'reactstrap';
 import { connect } from 'react-redux';
-import { pipe } from 'ramda';
+import { pipe, applySpec } from 'ramda';
 import './StartupPrompt.css';
-import { addStep } from 'store/actions';
+import { newGame } from 'store/actions';
 import { generateStep } from 'store/effects';
+import { isGameOver } from 'store/selectors';
 
-const StartupPromp = ({ onClick }) => (
+const StartupPromp = ({ onClick, isGameOver }) => (
   <Button className="startup-button" outline onClick={onClick}>
-    Ready?
+    {isGameOver ? (
+      <div>
+        You Win!<br />Restart?
+      </div>
+    ) : (
+      <span>Ready?</span>
+    )}
   </Button>
 );
 
-const mapDispatchToProps = { onClick: pipe(generateStep, addStep) };
+const mapStateToProps = applySpec({ isGameOver });
+const mapDispatchToProps = { onClick: pipe(generateStep, newGame) };
 
-export default connect(null, mapDispatchToProps)(StartupPromp);
+export default connect(mapStateToProps, mapDispatchToProps)(StartupPromp);

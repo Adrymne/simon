@@ -1,3 +1,6 @@
+export const NEW_GAME = 'NEW_GAME';
+export const newGame = section => ({ type: NEW_GAME, payload: section });
+
 export const ADD_STEP = 'ADD_STEP';
 export const addStep = section => ({ type: ADD_STEP, payload: section });
 
