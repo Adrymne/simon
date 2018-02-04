@@ -1,7 +1,8 @@
 import { Cmd, liftState } from 'redux-loop';
-import { pipe, evolve, append, curry, cond, assoc, ifElse } from 'ramda';
+import { pipe, evolve, append, curry, cond, assoc, ifElse, not } from 'ramda';
 import { createReducer, run } from 'utils';
 import {
+  TOGGLE_STRICT_MODE,
   ADD_STEP,
   ADVANCE_PLAYBACK,
   INPUT_SECTION,
@@ -25,6 +26,13 @@ const startPlayback = run({
   cmd: runPlayback,
   args: [Cmd.getState, Cmd.dispatch]
 });
+
+//-----------------------------------------------------------------------------
+// TOGGLE STRICT MODE
+//-----------------------------------------------------------------------------
+
+// toggleStrictMode :: (State, Action) -> (State, Cmd)
+const toggleStrictMode = pipe(evolve({ isStrict: not }), liftState);
 
 //-----------------------------------------------------------------------------
 // ADD STEP
@@ -163,6 +171,7 @@ const inputSection = (state, action) =>
   );
 
 export default createReducer(DEFAULT, {
+  [TOGGLE_STRICT_MODE]: toggleStrictMode,
   [NEW_GAME]: newGame,
   [ADD_STEP]: addStep,
   [ADVANCE_PLAYBACK]: advancePlayback,

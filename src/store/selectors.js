@@ -44,6 +44,9 @@ export const isPlayerPhase = pathSatisfies(
   ['gameState', 'phase']
 );
 
+// isStrictMode :: State -> Boolean
+export const isStrictMode = state => state.gameState.isStrict;
+
 // isGameOver :: State -> Boolean
 export const isGameOver = state =>
   Phase.case(
