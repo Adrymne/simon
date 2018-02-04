@@ -15,7 +15,8 @@
     "reactstrap": "^5.0.0-alpha.4",
     "redux": "^3.7.2",
     "redux-loop": "^4.2.4",
-    "sanctuary": "^0.14.1"
+    "sanctuary": "^0.14.1",
+    "union-type": "^0.4.1"
   },
   "scripts": {
     "start": "react-scripts start",

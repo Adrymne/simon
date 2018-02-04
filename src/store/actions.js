@@ -1,8 +1,5 @@
-export const NEW_GAME = 'NEW_GAME';
-export const newGame = () => ({ type: NEW_GAME });
-
 export const ADD_STEP = 'ADD_STEP';
-export const addStep = step => ({ type: ADD_STEP, payload: step });
+export const addStep = section => ({ type: ADD_STEP, payload: section });
 
 export const START_PLAYER_TURN = 'START_PLAYER_TURN';
 export const startPlayerTurn = () => ({ type: START_PLAYER_TURN });

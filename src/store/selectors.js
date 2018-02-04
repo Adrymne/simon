@@ -1,48 +1,63 @@
-import { pathEq } from 'ramda';
+import { pathSatisfies } from 'ramda';
 import S from 'sanctuary-module';
-import { STARTUP, PLAYER } from 'types';
+import { Phase } from 'types';
 import { PLAYBACK_SHOW_TIME, PLAYBACK_PAUSE_TIME } from 'invariants';
 
 /*
-State = {
-  gameState: {
-    phase :: Startup | Playback | Player
+Section = TopLeft | TopRight | BottomLeft | BottomRight
+
+PlaybackState = {
+  index :: Int,
+  isVisible :: Boolean
+}
+TargetIndex = Int
+
+GameState = {
+    phase :: None | Playback PlaybackState | Player TargetIndex
     sequence :: [Section],
-    playerInput :: [Section]
-  },
-  playbackState: Maybe {
-    index :: Int,
-    isVisible :: Boolean
+    isStrict :: Boolean
   }
+}
+
+State = {
+  gameState :: GameState
 }
 */
 
 // isStartupPhase :: State -> Boolean
-export const isStartupPhase = pathEq(['gameState', 'phase'], STARTUP);
+export const isStartupPhase = pathSatisfies(
+  Phase.case({ None: () => true, _: () => false }),
+  ['gameState', 'phase']
+);
+// isPlaybackPhase :: State -> Boolean
+export const isPlaybackPhase = pathSatisfies(
+  Phase.case({ Playback: () => true, _: () => false }),
+  ['gameState', 'phase']
+);
 // isPlayerPhase :: State -> Boolean
-export const isPlayerPhase = pathEq(['gameState', 'phase'], PLAYER);
+export const isPlayerPhase = pathSatisfies(
+  Phase.case({ Player: () => true, _: () => false }),
+  ['gameState', 'phase']
+);
 
 // getHighlightedSection :: State -> Maybe Section
-export const getHighlightedSection = ({
-  gameState: { sequence },
-  playbackState
-}) =>
-  S.chain(
-    ({ isVisible, index }) => (isVisible ? S.at(index, sequence) : S.Nothing),
-    playbackState
+export const getHighlightedSection = ({ gameState: { sequence, phase } }) =>
+  Phase.case(
+    {
+      Playback: (index, isVisible) =>
+        isVisible ? S.at(index, sequence) : S.Nothing,
+      _: () => S.Nothing
+    },
+    phase
   );
 
 // getNextPlaybackDelay :: State -> Int
-export const getNextPlaybackDelay = ({ playbackState }) =>
-  S.maybe(
-    0,
-    ({ isVisible }) => (isVisible ? PLAYBACK_SHOW_TIME : PLAYBACK_PAUSE_TIME),
-    playbackState
-  );
-
-// isPlaybackDone :: State -> Boolean
-export const isPlaybackDone = ({ gameState: { sequence }, playbackState }) =>
-  S.pipe(
-    [S.chain(({ index }) => S.at(index, sequence)), S.isNothing],
-    playbackState
+export const getNextPlaybackDelay = ({ gameState: { phase } }) =>
+  Phase.case(
+    {
+      Playback: (_, isVisible) =>
+        isVisible ? PLAYBACK_SHOW_TIME : PLAYBACK_PAUSE_TIME,
+      _: () => 0
+    },
+    phase
   );

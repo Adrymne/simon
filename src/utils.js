@@ -2,6 +2,7 @@ import { Cmd, loop } from 'redux-loop';
 import { propOr, identity } from 'ramda';
 import S from 'sanctuary-module';
 import Future from 'fluture';
+import { POSITIONS } from 'types';
 
 export const createReducer = (initial, spec) => (state = initial, action) =>
   propOr(identity, action.type, spec)(state, action);

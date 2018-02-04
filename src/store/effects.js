@@ -1,11 +1,9 @@
 import Future from 'fluture';
 import S from 'sanctuary-module';
-import { POSITIONS } from 'types';
-import { getNextPlaybackDelay, isPlaybackDone } from 'store/selectors';
+import { getNextPlaybackDelay, isPlaybackPhase } from 'store/selectors';
 import { advancePlayback } from 'store/actions';
 import { runSubscription } from 'utils';
-
-// GENERATE STEP
+import { POSITIONS } from 'types';
 
 // generate a random integer in the range [0, bound)
 const randomInt = bound => Math.floor(Math.random() * bound);
@@ -15,9 +13,9 @@ export const generateStep = () => POSITIONS[randomInt(POSITIONS.length)];
 // playbackSub :: (GetState, Dispatch) -> Future () ()
 const playbackSub = runSubscription(
   state =>
-    isPlaybackDone(state)
-      ? Future.of(S.Nothing)
-      : Future.after(getNextPlaybackDelay(state), S.Just(advancePlayback()))
+    isPlaybackPhase(state)
+      ? Future.after(getNextPlaybackDelay(state), S.Just(advancePlayback()))
+      : Future.of(S.Nothing)
 );
 // runPlayback :: (GetState, Dispatch) -> Promise
 export const runPlayback = (getState, dispatch) =>
