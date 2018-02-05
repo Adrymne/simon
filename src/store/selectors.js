@@ -24,7 +24,8 @@ GameState = {
 }
 
 State = {
-  gameState :: GameState
+  gameState :: GameState,
+  lastPosition :: Maybe Section
 }
 */
 
@@ -43,6 +44,9 @@ export const isPlayerPhase = pathSatisfies(
   Phase.case({ Player: () => true, _: () => false }),
   ['gameState', 'phase']
 );
+
+// getLastPosition :: State -> Maybe Section
+export const getLastPosition = state => state.lastInput;
 
 // isStrictMode :: State -> Boolean
 export const isStrictMode = state => state.gameState.isStrict;
