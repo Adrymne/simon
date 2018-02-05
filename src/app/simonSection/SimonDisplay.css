@@ -1,0 +1,32 @@
+.simon-playback {
+  width: 100%;
+  height: 100%;
+}
+
+.simon-playback.top-left {
+  background-color: darkgreen;
+}
+.simon-playback.top-left-highlighted {
+  background-color: greenyellow;
+}
+
+.simon-playback.top-right {
+  background-color: darkred;
+}
+.simon-playback.top-right-highlighted {
+  background-color: red;
+}
+
+.simon-playback.bottom-left {
+  background-color: darkgoldenrod;
+}
+.simon-playback.bottom-left-highlighted {
+  background-color: yellow;
+}
+
+.simon-playback.bottom-right {
+  background-color: darkblue;
+}
+.simon-playback.bottom-right-highlighted {
+  background-color: blue;
+}

@@ -1,14 +1,16 @@
 import React from 'react';
+import { connect } from 'react-redux';
+import { applySpec } from 'ramda';
 import './OutputDisplay.css';
 import { Progress } from 'reactstrap';
+import { MAX_SEQUENCE } from 'invariants';
+import { getCurrentStep, getCurrentSequenceLength } from 'store/selectors';
 
-const maxSteps = 20;
-const currentMax = 10;
-const currentStep = 6;
-
-const OutputDisplay = () => (
+const OutputDisplay = ({ currentStep, currentMax, maxSteps }) => (
   <div className="output-display-box">
-    <div className="text-center">6 of 20</div>
+    <div className="text-center">
+      {currentMax} of {maxSteps}
+    </div>
     <Progress multi>
       <Progress bar color="primary" value={currentStep} max={maxSteps} />
       <Progress
@@ -21,4 +23,10 @@ const OutputDisplay = () => (
   </div>
 );
 
-export default OutputDisplay;
+const mapStateToProps = applySpec({
+  maxSteps: () => MAX_SEQUENCE,
+  currentStep: getCurrentStep,
+  currentMax: getCurrentSequenceLength
+});
+
+export default connect(mapStateToProps)(OutputDisplay);
