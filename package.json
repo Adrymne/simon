@@ -1,0 +1,31 @@
+{
+  "name": "simon",
+  "version": "1.0.0",
+  "private": true,
+  "homepage": "https://github.com/Adrymne/simon",
+  "dependencies": {
+    "bootstrap": "^4.0.0",
+    "fluture": "^8.0.1",
+    "fluture-sanctuary-types": "^1.5.0",
+    "gh-pages": "^1.1.0",
+    "ramda": "^0.25.0",
+    "react": "^16.2.0",
+    "react-dom": "^16.2.0",
+    "react-redux": "^5.0.6",
+    "react-scripts": "1.1.0",
+    "react-sound": "^1.1.0",
+    "reactstrap": "^5.0.0-alpha.4",
+    "redux": "^3.7.2",
+    "redux-loop": "^4.2.4",
+    "sanctuary": "^0.14.1",
+    "union-type": "^0.4.1"
+  },
+  "scripts": {
+    "predeploy": "npm run build",
+    "deploy": "gh-pages -d build",
+    "start": "react-scripts start",
+    "build": "react-scripts build",
+    "test": "react-scripts test --env=jsdom",
+    "eject": "react-scripts eject"
+  }
+}

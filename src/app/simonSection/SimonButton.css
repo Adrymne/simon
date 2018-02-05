@@ -1,0 +1,45 @@
+.simon-button {
+  width: 100%;
+  height: 100%;
+  cursor: pointer;
+}
+
+.top-left {
+  background-color: darkgreen;
+}
+.top-left:hover {
+  background-color: green;
+}
+.top-left:active {
+  background-color: greenyellow;
+}
+
+.top-right {
+  background-color: darkred;
+}
+.top-right:hover {
+  background-color: brown;
+}
+.top-right:active {
+  background-color: red;
+}
+
+.bottom-left {
+  background-color: darkgoldenrod;
+}
+.bottom-left:hover {
+  background-color: goldenrod;
+}
+.bottom-left:active {
+  background-color: yellow;
+}
+
+.bottom-right {
+  background-color: darkblue;
+}
+.bottom-right:hover {
+  background-color: royalblue;
+}
+.bottom-right:active {
+  background-color: blue;
+}

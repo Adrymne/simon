@@ -1,0 +1,27 @@
+.app-container {
+  height: 100%;
+
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.simon-container {
+  width: 80vh;
+  height: 80vh;
+  position: relative;
+}
+
+.simon-settings {
+  width: 60%;
+  height: 60%;
+  background-color: white;
+  position: absolute;
+  top: 20%;
+  left: 20%;
+  border-radius: 50%;
+
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}

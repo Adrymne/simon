@@ -1,0 +1,31 @@
+.simon-area {
+  position: absolute;
+  width: 50%;
+  height: 50%;
+  border: none;
+  overflow: hidden;
+}
+
+.simon-top-left {
+  top: 0;
+  left: 0;
+  border-radius: 100% 0 0 0;
+}
+
+.simon-top-right {
+  top: 0;
+  right: 0;
+  border-radius: 0 100% 0 0;
+}
+
+.simon-bottom-left {
+  bottom: 0;
+  left: 0;
+  border-radius: 0 0 0 100%;
+}
+
+.simon-bottom-right {
+  bottom: 0;
+  right: 0;
+  border-radius: 0 0 100% 0;
+}
