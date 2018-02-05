@@ -90,8 +90,10 @@ export const getHighlightedSection = ({ gameState: { sequence, phase } }) =>
 export const getNextPlaybackDelay = ({ gameState: { phase } }) =>
   Phase.case(
     {
-      Playback: (_, isVisible) =>
-        isVisible ? PLAYBACK_SHOW_TIME : PLAYBACK_PAUSE_TIME,
+      Playback: (index, isVisible) =>
+        isVisible
+          ? PLAYBACK_SHOW_TIME
+          : PLAYBACK_PAUSE_TIME * (index === 0 ? 2 : 1),
       _: () => 0
     },
     phase
