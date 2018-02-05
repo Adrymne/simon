@@ -6,6 +6,7 @@ import SimonSection from './app/SimonSection';
 import Settings from './app/Settings';
 import StartupPrompt from './app/StartupPrompt';
 import PlayerSound from './app/PlayerSound';
+import SourceLink from './app/SourceLink';
 import { POSITIONS } from 'types';
 import { isStartupPhase } from 'store/selectors';
 
@@ -18,6 +19,7 @@ const App = ({ isStartupPhase }) => (
       </div>
       <PlayerSound />
     </div>
+    <SourceLink />
   </div>
 );
 
